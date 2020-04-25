@@ -5,14 +5,14 @@
 #@ stable_config = json.decode(data.values.stable_config)
 
 #@overlay/match by=overlay.subset({"kind":"AWSCluster"})
+---
 spec:
-  #@overlay/match by="name",missing_ok=True
   region: #@ stable_config["region"]
-  #@overlay/match by="name",missing_ok=True
+  #@overlay/match missing_ok=True
   sshKeyName: #@ stable_config["ops_manager_key_pair_name"]
   #! Set to false to skip creation of bastion host
   bastion:
-    #@overlay/match by="name",missing_ok=True
+    #@overlay/match missing_ok=True
     enabled: false
   networkSpec:
     #@overlay/remove
@@ -20,5 +20,5 @@ spec:
     vpc:
       #@overlay/remove
       cidrBlock:
-      #@overlay/match by="name",missing_ok=True
+      #@overlay/match missing_ok=True
       id: #@ stable_config["vpc_id"]
