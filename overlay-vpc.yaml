@@ -4,8 +4,7 @@
 
 #@ stable_config = json.decode(data.values.stable_config)
 
-apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
-kind: AWSCluster
+#@overlay/match by=overlay.subset({"kind":"AWSCluster"})
 spec:
   #@overlay/match by="name",missing_ok=True
   region: #@ stable_config["region"]
@@ -16,6 +15,10 @@ spec:
     #@overlay/match by="name",missing_ok=True
     enabled: false
   networkSpec:
+    #@overlay/remove
+    subnets:
     vpc:
+      #@overlay/remove
+      cidrBlock:
       #@overlay/match by="name",missing_ok=True
       id: #@ stable_config["vpc_id"]
