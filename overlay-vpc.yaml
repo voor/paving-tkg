@@ -22,3 +22,13 @@ spec:
       cidrBlock:
       #@overlay/match missing_ok=True
       id: #@ stable_config["vpc_id"]
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+spec:
+  kubeadmConfigSpec:
+    clusterConfiguration:
+      controllerManager:
+        extraArgs:
+          #@overlay/match missing_ok=True
+          configure-cloud-routes: "false"
