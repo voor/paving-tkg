@@ -1,0 +1,24 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:json", "json")
+#@ load("@ytt:data", "data")
+
+#@ stable_config = json.decode(data.values.stable_config)
+
+#@overlay/match by=overlay.subset({"kind":"AWSCluster"})
+---
+spec:
+  region: #@ stable_config["region"]
+  #@overlay/match missing_ok=True
+  sshKeyName: #@ stable_config["ops_manager_key_pair_name"]
+  #! Set to false to skip creation of bastion host
+  bastion:
+    #@overlay/match missing_ok=True
+    enabled: false
+  networkSpec:
+    #@overlay/remove
+    subnets:
+    vpc:
+      #@overlay/remove
+      cidrBlock:
+      #@overlay/match missing_ok=True
+      id: #@ stable_config["vpc_id"]

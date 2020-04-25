@@ -19,7 +19,10 @@ terraform output stable_config > ~/workspace/paving-tkg/stable_config.json
 # Where you checked out this repo
 cd ~/workspace/paving-tkg/
 # This is a default location
-ytt --data-value-file stable_config=stable_config.json -f cluster-template-paving.yaml -f values.yaml > ~/.tkg/providers/infrastructure-aws/v0.5.2/cluster-template-paving.yaml
+ytt --ignore-unknown-comments --data-value-file stable_config=stable_config.json \
+    -f ~/.tkg/providers/infrastructure-aws/v0.5.2/cluster-template-dev.yaml \
+    -f overlay-vpc.yaml \
+        -f values.yaml > ~/.tkg/providers/infrastructure-aws/v0.5.2/cluster-template-paving.yaml
 
 # Now just init tkg with the paving plan.
 tkg init --infrastructure aws:v0.5.2 -p paving --name capa
