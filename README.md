@@ -22,7 +22,7 @@ cd ~/workspace/paving-tkg/
 ytt --ignore-unknown-comments --data-value-file stable_config=stable_config.json \
     -f ~/.tkg/providers/infrastructure-aws/v0.5.2/cluster-template-dev.yaml \
     -f overlay-vpc.yaml \
-        -f values.yaml > sample.yaml
+        -f values.yaml > ~/.tkg/providers/infrastructure-aws/v0.5.2/cluster-template-paving.yaml
 
 # Now just init tkg with the paving plan.
 tkg init --infrastructure aws:v0.5.2 -p paving --name capa
